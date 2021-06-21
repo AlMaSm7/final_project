@@ -98,13 +98,13 @@ router.post('/login', async (req, res) => {
 
 
   let query = 'SELECT * FROM `users` WHERE `username` = ' + con.escape(data_user.username) + ' AND `password` = ' + con.escape(password_hashed) + ';'
-  console.log(query)
+  //console.log(query)
   con.query(query, (error, results, fields) => {
     if (error) {
       return console.error(error.message)
     } else if (results.length == 0) {
       console.log(results)
-      return console.log('RESULTS ARE NULL, USER OR PASSWORD WRONG')
+      return console.log('WRONG')
     } else {
       console.log(results)
       res.send(results)
@@ -114,7 +114,7 @@ router.post('/login', async (req, res) => {
 
 
 router.post('/users', (req, res) => {
-  console.log(req);
+  //console.log(req);
   // res.send('Hello Moundo!') 
   let query = 'SELECT username, firstname, lastname, email FROM users WHERE `user_id` = ' + con.escape(req.body.user_id) + ';' 
   console.log(query)
@@ -158,7 +158,7 @@ router.post('/upload', upload.fields([
 ]), async (req, res) => {
   let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
   try {
-    console.log('mp4', file_path)
+    //console.log('mp4', file_path)
     const get_Time = await get_Duration(full_path)
     console.log(get_Time)
     let query = 'INSERT INTO videos(title, length, path, time, thumbnail) VALUES (' + con.escape(req.body.title) + ',' + con.escape(get_Time) + ',' + con.escape(file_path) + ', ' + con.escape(date) + ', ' + con.escape(image_path) + ');'
@@ -206,8 +206,9 @@ router.post('/getVideo', (req, res) =>{
   })
 })
 
-app.get('/getComments', (req, res) =>{
-  let query = 'SELECT comments.text, users.username, comments.time FROM comments INNER JOIN users ON comments.users_id_fs = users.user_id;'
+router.post('/getComments', (req, res) =>{
+  let query = 'SELECT comments.text, users.username, comments.time FROM comments INNER JOIN users ON comments.users_id_fs = users.user_id WHERE comments.videos_id_fs = ' + con.escape(req.body.id) + ';'
+  console.log(query)
   con.query(query, (error, results, fields) => {
     if(error){
       console.log(error)
@@ -223,12 +224,12 @@ function get_Duration(file_path) {
     ffmpeg.ffprobe(file_path, function (err, metadata) {
       console.log('helloi')
       if (err) {
-        console.log(file_path)
+        ///sconsole.log(file_path)
         console.log(err.message)
         return reject(err)
       } else {
         console.log("Here", file_path)
-        console.log(metadata.format.duration)
+        //console.log(metadata.format.duration)
         vid_length = metadata.format.duration / 60
         return resolve(vid_length)
       }
