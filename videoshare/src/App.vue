@@ -3,9 +3,9 @@
     <login v-if="!user_here" />
     <register v-if="!user_here" />
     <upload v-if="!user_here" />
-    <home v-if="user_here && !watching"/>
+    <home v-if="user_here && !watchvideo"/>
     <userData v-if="!user_here"/>
-    <player v-if="watching"/>
+    <player v-if="watchvideo"/>
   </div>
 </template>
 
@@ -40,14 +40,19 @@ export default {
       user_here: false,
       user: store.state.user_id,
       username: store.state.username,
-      watching: store.getters.getWatch
+      watching: store.state.watch_video
     }
   },
   computed: {
-    getWatch(){
-      return store.getters.getWatch
+    watchvideo: function (){
+      return store.state.watch_video
     }
   },
+  /*watch:{
+    watchvideo(){
+      this.watching
+    }
+  },*/
   methods: {
     logged_in: function () {
       return new Promise((resolve, reject) => {
