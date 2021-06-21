@@ -180,6 +180,21 @@ app.get('/dislike', (req, res) => {
   let query = "UPDATE videos SET dislikes = dislikes + 1 WHERE SomeFilterField = @ParameterID"
 })
 
+router.post('/comment', (req, res) => {
+  let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+  console.log(req.body)
+  let query = 'INSERT INTO comments(text, time, videos_id_fs, users_id_fs) VALUES (' + con.escape(req.body.comment) + ', ' + con.escape(date) + ', ' + con.escape(req.body.id) + ', ' + con.escape(req.body.user_id) +');'
+  console.log(query)
+  con.query(query, (error, results, fields) => {
+    if (error) {
+      console.log(error)
+    } else {
+      console.log("sucess")
+      res.send(results)
+    }
+  })
+})
+
 router.post('/getVideo', (req, res) =>{
   let query = `SELECT * FROM videos WHERE videos_id = ${req.body.id}`
   con.query(query, (error, results, fields) => {
@@ -192,7 +207,7 @@ router.post('/getVideo', (req, res) =>{
 })
 
 app.get('/getComments', (req, res) =>{
-  let query = 'SELECT * FROM comments'
+  let query = 'SELECT comments.text, users.username, comments.time FROM comments INNER JOIN users ON comments.users_id_fs = users.user_id;'
   con.query(query, (error, results, fields) => {
     if(error){
       console.log(error)

@@ -48,11 +48,6 @@ export default {
       return store.state.watch_video
     }
   },
-  /*watch:{
-    watchvideo(){
-      this.watching
-    }
-  },*/
   methods: {
     logged_in: function () {
       return new Promise((resolve, reject) => {
@@ -74,11 +69,13 @@ export default {
         .then((result) => {
           console.log(result)
           this.user_here = true
-          store.commit('setNull')
+          //store.commit('setNull')
         })
         .catch((err) => {
           console.log(err)
           this.user_here = false
+          store.commit('logout')
+          store.commit('setNull')
         })
     },
   },
