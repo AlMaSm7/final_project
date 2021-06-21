@@ -23,7 +23,7 @@ ffmpeg.setFfprobePath('C:\\ffmpeg_module\\bin\\ffprobe.exe')
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'C:\\work\\ZLI\\Abschluss_Projekt\\videoshare\\src\\assets\\VIDEOS')
+    cb(null, 'C:\\work\\ZLI\\Back_up\\final_project\\videoshare\\src\\assets\\VIDEOS')
     return cb
   },
   filename: function (req, file, cb) {
@@ -34,7 +34,7 @@ var storage = multer.diskStorage({
     //console.log(ffmpeg.ffprobe)
     if (file.mimetype == 'video/mp4' || file.mimetype == 'video/mpeg') {
       file_path = file_name
-      full_path = 'C:\\work\\ZLI\\Abschluss_Projekt\\videoshare\\src\\assets\\VIDEOS\\' + file_name
+      full_path = 'C:\\work\\ZLI\\Back_up\\final_project\\videoshare\\src\\assets\\VIDEOS\\' + file_name
       console.log(file_path)
       console.log('UPLOAD NOW')
     } else if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/tiff' || file.mimetype == 'image/png') {
