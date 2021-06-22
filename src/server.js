@@ -116,7 +116,7 @@ router.post('/login', async (req, res) => {
 router.post('/users', (req, res) => {
   //console.log(req);
   // res.send('Hello Moundo!') 
-  let query = 'SELECT username, firstname, lastname, email FROM users WHERE `user_id` = ' + con.escape(req.body.user_id) + ';' 
+  let query = 'SELECT username, firstname, lastname, email FROM users WHERE `user_id` = ' + con.escape(req.body.user_id) + ';'
   console.log(query)
   con.query(query, (error, results, fields) => {
     if (error) {
@@ -141,11 +141,6 @@ app.get('/videos', (req, res) => {
     if (error) {
       return console.error(error.message)
     } else {
-      /*let blob_data = []
-      results.forEach(element => {
-        blob_data.push(element.thumbnail.data)
-      })*/
-
       res.send(results)
     }
     // console.log(results)
@@ -176,14 +171,77 @@ router.post('/upload', upload.fields([
 
 })
 
-app.get('/dislike', (req, res) => {
-  let query = "UPDATE videos SET dislikes = dislikes + 1 WHERE SomeFilterField = @ParameterID"
+
+router.post('/like', (req, res) => {
+  let check = 'SELECT * FROM liked_dislike WHERE users_id_fs = ' + con.escape(req.body.user_id) + ' AND videos_id_fs = ' + con.escape(req.body.id) + ';'
+  let take_userlike_away = 'UPDATE liked_dislike SET liked = NULL WHERE users_id_fs = ' + con.escape(req.body.user_id) + ' AND videos_id_fs =' + con.escape(req.body.id) + ';'
+  let like_minus1 = 'UPDATE videos SET likes = likes - 1 WHERE videos_id =' + con.escape(req.body.id) + ';'
+  let query = 'UPDATE videos SET likes = likes + 1 WHERE videos_id =' + con.escape(req.body.id) + ';'
+  let insert = 'INSERT INTO liked_dislike(liked, users_id_fs, videos_id_fs) VALUES (1, ' + con.escape(req.body.user_id) + ', ' + con.escape(req.body.id) + ');'
+  let like_again = 'UPDATE liked_dislike SET liked = 1 WHERE videos_id_fs = ' + con.escape(req.body.id) + ' AND videos_id_fs = ' + con.escape(req.body.id) + ';' 
+
+  console.log(check)
+  con.query(check, (error, results_1, fields) => {
+    if (error) {
+      console.log(error)
+    } else if (results_1.length == 0) {
+      con.query(query, (error, results_2, fields) => {
+        if (error) {
+          console.log(error)
+        } else {
+          console.log(results_1)
+          console.log("sucess 3")
+          console.log(insert)
+          con.query(insert, (error, results_3, fields) => {
+            if (error) {
+              console.log(error)
+            } else {
+              res.send(results_3)
+            }
+          })
+        }
+      })
+    } else if (results_1[0].liked == null) {
+      console.log("RESULTS:" + results_1[0].liked)
+      console.log('long'+ results_1.length)
+      con.query(query, (error, results_of_likeagain, fields) => {
+        if (error) {
+          console.log(error)
+        } else {
+          console.log(like_again)
+          con.query(like_again, (error, results_of_new_like, fields) => {
+            if (error) {
+              console.log(error)
+            } else {
+              res.send(results_of_new_like)
+            }
+          })
+        }
+      })
+
+    } else {
+      con.query(take_userlike_away, (error, results_4, fields) => {
+        if (error) {
+          console.log(error)
+        } else {
+          console.log("sucess 4")
+          con.query(like_minus1, (error, results_5, fields) => {
+            if (error) {
+              console.log(error)
+            } else {
+              res.send(results_5)
+            }
+          })
+        }
+      })
+    }
+  })
 })
 
 router.post('/comment', (req, res) => {
   let date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
   console.log(req.body)
-  let query = 'INSERT INTO comments(text, time, videos_id_fs, users_id_fs) VALUES (' + con.escape(req.body.comment) + ', ' + con.escape(date) + ', ' + con.escape(req.body.id) + ', ' + con.escape(req.body.user_id) +');'
+  let query = 'INSERT INTO comments(text, time, videos_id_fs, users_id_fs) VALUES (' + con.escape(req.body.comment) + ', ' + con.escape(date) + ', ' + con.escape(req.body.id) + ', ' + con.escape(req.body.user_id) + ');'
   console.log(query)
   con.query(query, (error, results, fields) => {
     if (error) {
@@ -195,24 +253,48 @@ router.post('/comment', (req, res) => {
   })
 })
 
-router.post('/getVideo', (req, res) =>{
-  let query = `SELECT * FROM videos WHERE videos_id = ${req.body.id}`
+app.get('/viewing', (req, res) => {
+  let query = 'UPDATE videos SET views = views + 1;'
+
   con.query(query, (error, results, fields) => {
-    if(error){
+    if (error) {
       console.log(error)
-    }else{
+    } else {
+      console.log("sucess")
       res.send(results)
     }
   })
 })
 
-router.post('/getComments', (req, res) =>{
-  let query = 'SELECT comments.text, users.username, comments.time FROM comments INNER JOIN users ON comments.users_id_fs = users.user_id WHERE comments.videos_id_fs = ' + con.escape(req.body.id) + ';'
-  console.log(query)
+router.post('/getVideo', (req, res) => {
+  let query = `SELECT * FROM videos WHERE videos_id = ${req.body.id}`
   con.query(query, (error, results, fields) => {
-    if(error){
+    if (error) {
       console.log(error)
-    }else{
+    } else {
+      res.send(results)
+    }
+  })
+})
+
+router.post('/getComments', (req, res) => {
+  let query = 'SELECT comments.text, users.username, comments.time FROM comments INNER JOIN users ON comments.users_id_fs = users.user_id WHERE comments.videos_id_fs = ' + con.escape(req.body.id) + ';'
+  //console.log(query)
+  con.query(query, (error, results, fields) => {
+    if (error) {
+      console.log(error)
+    } else {
+      res.send(results)
+    }
+  })
+})
+router.post('/numbers', (req, res) => {
+  let query = 'SELECT likes, dislikes, views FROM videos WHERE videos_id = ' + con.escape(req.body.id) + ';'
+  con.query(query, (error, results, fields) => {
+    if (error) {
+      console.log(error)
+    } else {
+      //console.log("Sucess")
       res.send(results)
     }
   })

@@ -23,7 +23,7 @@ export default {
     methods: {
         
     },
-    created() {
+    beforeMount() {
         const { user_id } = this;
         axios.post("http://localhost:3000/users", {
             user_id

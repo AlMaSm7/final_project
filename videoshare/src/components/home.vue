@@ -35,7 +35,7 @@ export default {
             })
         }
     },
-    created() {
+    beforeMount() {
         axios.get('http://localhost:3000/videos')
         .then((response) => {
         // handle success
