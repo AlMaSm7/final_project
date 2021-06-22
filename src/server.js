@@ -180,7 +180,7 @@ router.post('/like', (req, res) => {
   let insert = 'INSERT INTO liked_dislike(liked, users_id_fs, videos_id_fs) VALUES (1, ' + con.escape(req.body.user_id) + ', ' + con.escape(req.body.id) + ');'
   let like_again = 'UPDATE liked_dislike SET liked = 1 WHERE videos_id_fs = ' + con.escape(req.body.id) + ' AND videos_id_fs = ' + con.escape(req.body.id) + ';' 
 
-  console.log(check)
+  //console.log(check)
   con.query(check, (error, results_1, fields) => {
     if (error) {
       console.log(error)

@@ -1,16 +1,15 @@
 <template>
     <div class="video-container">
         <video :src="require(`../assets/VIDEOS/${video_src}`)" controls autoplay muted></video>
-        <p>{{title}}</p>
-        <p class="views">{{media_numbers[0].views}}</p>
-        <p class="like">{{media_numbers[0].like}}</p>
-        <p class="dislike">{{media_numbers[0].dislike}}</p>
-        <button class="like" @click="like(id, user_id)"></button>
-        <textarea type="text" v-model="comment" placeholder="Comment..." rows="4" cols="50"></textarea>
+        <p>Title: {{title}}</p>
+        <p class="views">Views: {{media_numbers[0].views}}</p>
+        <p class="like">Likes: {{media_numbers[0].likes}}</p>
+        <button class="like" @click="like(id, user_id)">LIKE</button>
+        <textarea type="text" v-model="comment" placeholder="Comment..." rows="3" cols="100"></textarea>
         <button type="submit" @click="handle_comment(id, user_id)">Submit comment</button>
         <div class="comments" v-for="comment in all_comments" :key="comment">
-            <p>{{comment.username}}</p>
-            <p>{{comment.text}}</p>
+            <p>Username: {{comment.username}}</p>
+            <p>Comment: {{comment.text}}</p>
         </div>
     </div>
 </template>
@@ -110,4 +109,5 @@ export default {
     .like{
         background-image: url(../assets/like.png) no-repeat;
     }
+
 </style>
