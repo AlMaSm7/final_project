@@ -3,10 +3,10 @@
         <video :src="require(`../assets/VIDEOS/${video_src}`)" controls autoplay muted></video>
         <p>Title: {{title}}</p>
         <p class="views">Views: {{media_numbers[0].views}}</p>
-        <p class="like">Likes: {{media_numbers[0].likes}}</p>
+        <p class="like_text">Likes: {{media_numbers[0].likes}}</p>
         <button class="like" @click="like(id, user_id)">LIKE</button>
         <textarea type="text" v-model="comment" placeholder="Comment..." rows="3" cols="100"></textarea>
-        <button type="submit" @click="handle_comment(id, user_id)">Submit comment</button>
+        <button type="submit" @click="handle_comment(id, user_id)" class="submit">Submit comment</button>
         <div class="comments" v-for="comment in all_comments" :key="comment">
             <p>Username: {{comment.username}}</p>
             <p>Comment: {{comment.text}}</p>
@@ -107,7 +107,20 @@ export default {
 
 <style>
     .like{
-        background-image: url(../assets/like.png) no-repeat;
+        background: url(../assets/like.png) 1px 1px no-repeat transparent;
+        cursor: pointer;
+        align-content: center;
+        height: 35px;
+        border: transparent;
+    }
+    .submit{
+        cursor: pointer;
+        border-radius: 5px;
+        align-content: center;
+        height: 25px;
+        border: transparent;
+        color: rgb(175, 175, 175 );
+        background-color: rgb(28, 28, 28  );
     }
 
 </style>
