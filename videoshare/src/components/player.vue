@@ -37,7 +37,7 @@ export default {
                 comment
             }).then((res) => {
                 console.log(res.data)
-                this.loadnewComment(id)
+                this.getComments(id)
             }).catch((err) => {
                 console.log(err)
             })
@@ -48,6 +48,7 @@ export default {
             }).then((Response) => {
                 console.log(Response.data)
                 console.log(this.all_comments)
+                this.all_comments.length = 0
                 Response.data.forEach(element => {
                     this.all_comments.push({"text": element.text, "username": element.username, time: element.time})
                 })
@@ -56,17 +57,6 @@ export default {
                 console.log(err)
             })
         },
-        loadnewComment: function loadnewComment(id){
-            axios.post('http://localhost:3000/getComments', {id}).then((Response) => {
-                this.all_comments.length = 0
-                Response.data.forEach(element => {
-                    this.all_comments.push({"text": element.text, "username": element.username, "time": element.time})
-                })
-                console.log(this.all_comments)
-            }).catch((err) => {
-                console.log(err)
-            })
-        }, 
         loadnums: function loadnums(id){
             axios.post('http://localhost:3000/numbers',{id}).then((Response) => {
                 console.log(Response.data)
@@ -119,8 +109,13 @@ export default {
         align-content: center;
         height: 25px;
         border: transparent;
-        color: rgb(175, 175, 175 );
-        background-color: rgb(28, 28, 28  );
+        color: rgb(175, 175, 175);
+        background-color: rgb(28, 28, 28);
+        transition: 0.7s;
+    }
+    .submit:hover{
+        background-color: rgb(67, 142, 15);
+        color: whitesmoke;
     }
 
 </style>

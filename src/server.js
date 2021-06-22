@@ -299,6 +299,9 @@ router.post('/numbers', (req, res) => {
     }
   })
 })
+router.post('/getUserVideos', (req, res) => {
+  let query = 'SELECT videos.path, videos.thumbnail FROM users INNER JOIN comments ON users.user_id = comments.users_id_fs INNER JOIN videos ON comments.videos_id_fs = videos.videos_id WHERE users.user_id = 1'
+})
 
 function get_Duration(file_path) {
   console.log('started')
