@@ -58,7 +58,8 @@ export default {
           )
           /*Vue.prototype.$userId = Response.data.insertId
           Vue.prototype.$username = username*/
-          store.state.commit('login', username, Response.data.insertId)
+          console.log(Response.data.insertId)
+          store.commit('login', {username: username, uid: Response.data.insertId})
           //store.state.user_id = Response.data.insertId
           bus.$emit("cookieset", username)
           console.log(Vue.prototype.$userId)
