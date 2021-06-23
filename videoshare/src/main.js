@@ -6,9 +6,11 @@ import AsyncComputed from 'vue-async-computed'
 import Vuex from 'vuex'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(faThumbsUp)
+library.add(faPaperPlane)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

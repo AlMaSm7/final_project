@@ -8,14 +8,14 @@
             <p class="title">{{title}}</p>
             <p class="views">Views: {{media_numbers[0].views}}</p>
             <font-awesome-icon :icon="['fas', 'thumbs-up']" size="2x" class="like" @click="like(id, user_id)"/>
-            <p class="like_text">{{likes}}</p>
+            <p class="like_text">{{media_numbers[0].likes}}</p>
         </div>
         <div class="input_comments">
-            <textarea type="text" v-model="comment" placeholder="Comment..." rows="3" cols="100" required></textarea>
-            <button type="submit" @click="handle_comment(id, user_id)" class="submit">Submit comment</button>
+            <textarea type="text" v-model="comment" placeholder="Comment..." rows="1" cols="100" required></textarea>
+            <font-awesome-icon :icon="['fas', 'paper-plane']" size="2x" class="like" @click="handle_comment(id, user_id)"/>
         </div>
         <div v-for="comment in all_comments" :key="comment" class="comments">
-            <p>Username: {{comment.username}}</p>
+            <p>Username: {{comment.username}}</p><br>
             <p>Comment: {{comment.text}}</p>
         </div>
     </div>
@@ -69,7 +69,7 @@ export default {
             axios.post('http://localhost:3000/numbers',{id}).then((Response) => {
                 console.log(Response.data)
                 Response.data.forEach(element => {
-                    this.media_numbers.push({"views": element.views})
+                    this.media_numbers.push({"views": element.views, "likes": element.likes})
                     this.likes = element.likes
                 })
                 console.log(this.media_numbers)
@@ -82,6 +82,7 @@ export default {
                 id,
                 user_id
             }).then((Response) => {
+                this.loadnums(id)
                 console.log(Response.data);
             }).catch((err) => {
                 console.log(err)
@@ -107,6 +108,11 @@ export default {
     .like{
         cursor: pointer;
         color: rgb(143, 143, 143);
+        transition: 0.7s;
+    }
+    .like:hover{
+        cursor: pointer;
+        color: rgb(60, 128, 255);
     }
     .submit{
         cursor: pointer;
@@ -143,13 +149,14 @@ export default {
         margin: 50px;
     }
     video{
-        width: 1200px;
+        width: 1100px;
         height: 600px;
+        background-color: black;
     }
     .video_player{
         display: flex;
         justify-content: left;
-        margin-left: 30px;
+        margin-left: 100px;
         height: min-content;
     }
     h1{
@@ -158,9 +165,12 @@ export default {
         margin-left: 100px;
     }
     textarea{
-        background-color: rgb(37, 37, 37);
+        background-color: transparent;
         border: none;
         border-radius: 2px;
+        color: rgb(167, 167, 167);
+        border-bottom: rgb(175, 175, 175) 1px solid;
+        resize: none;
     }
     textarea::placeholder{
         color: rgb(167, 167, 167);
@@ -168,15 +178,22 @@ export default {
     textarea:focus{
         color: rgb(175, 175, 175);
         outline: none;
-        border-color: #297522;
-        box-shadow: 0 0 10px #297522;
+        
     }
     .input_comments{
         margin-left: 100px;
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: baseline;
+    }
+    .comments > p{
+        color: rgb(167, 167, 167);
+    }
+    .comments{
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column-reverse;
     }
 
 
