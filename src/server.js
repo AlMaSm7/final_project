@@ -126,6 +126,7 @@ router.post('/users', (req, res) => {
     }
   })
 })
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
@@ -227,7 +228,6 @@ router.post('/like', (req, res) => {
           })
         }
       })
-
     } else {
       con.query(take_userlike_away, (error, results_4, fields) => {
         if (error) {

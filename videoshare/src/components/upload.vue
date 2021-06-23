@@ -47,7 +47,6 @@ export default {
       this.video = this.$refs.video.files[0];
     },
     upload: async function upload() {
-      //var variables = this
 
       let formdata = new FormData();
 

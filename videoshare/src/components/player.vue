@@ -8,15 +8,14 @@
             <p class="title">{{title}}</p>
             <p class="views">Views: {{media_numbers[0].views}}</p>
             <font-awesome-icon :icon="['fas', 'thumbs-up']" size="2x" class="like" @click="like(id, user_id)"/>
-            <p class="like_text">{{media_numbers[0].likes}}</p>
+            <p class="like_text">{{media_numbers[0].likes}} Likes</p>
         </div>
         <div class="input_comments">
             <textarea type="text" v-model="comment" placeholder="Comment..." rows="1" cols="100" required></textarea>
             <font-awesome-icon :icon="['fas', 'paper-plane']" size="2x" class="like" @click="handle_comment(id, user_id)"/>
         </div>
         <div v-for="comment in all_comments" :key="comment" class="comments">
-            <p>Username: {{comment.username}}</p><br>
-            <p>Comment: {{comment.text}}</p>
+            <p><b>Comment from {{comment.username}}:</b> {{comment.text}}</p>
         </div>
     </div>
 </template>
@@ -192,8 +191,9 @@ export default {
     }
     .comments{
         display: flex;
-        justify-content: flex-start;
-        flex-direction: column-reverse;
+        margin-left: 100px;
+        align-items: flex-start;
+        flex-direction: column;
     }
 
 
