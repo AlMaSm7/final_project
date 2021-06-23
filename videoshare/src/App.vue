@@ -5,8 +5,8 @@
     <upload v-if="!user_here" />
     <home v-if="!user_here && !watchvideo"/>
     <userData v-if="!user_here"/>
-    <player v-if="!watchvideo"/>
-    <usr_videos v-if="user_here"/>
+    <player v-if="watchvideo"/>
+    <usr_videos v-if="!user_here"/>
   </div>
 </template>
 

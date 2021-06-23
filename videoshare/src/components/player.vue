@@ -1,13 +1,20 @@
 <template>
     <div class="video-container">
-        <video :src="require(`../assets/VIDEOS/${video_src}`)" controls autoplay muted></video>
-        <p>Title: {{title}}</p>
-        <p class="views">Views: {{media_numbers[0].views}}</p>
-        <p class="like_text">Likes: {{media_numbers[0].likes}}</p>
-        <button class="like" @click="like(id, user_id)"></button>
-        <textarea type="text" v-model="comment" placeholder="Comment..." rows="3" cols="100" required></textarea>
-        <button type="submit" @click="handle_comment(id, user_id)" class="submit">Submit comment</button>
-        <div class="comments" v-for="comment in all_comments" :key="comment">
+        <h1>DaTube</h1>
+        <div class="video_player">
+            <video :src="require(`../assets/VIDEOS/${video_src}`)" controls autoplay muted></video>
+        </div>
+        <div class="content">
+            <p class="title">{{title}}</p>
+            <p class="views">Views: {{media_numbers[0].views}}</p>
+            <font-awesome-icon :icon="['fas', 'thumbs-up']" size="2x" class="like" @click="like(id, user_id)"/>
+            <p class="like_text">{{likes}}</p>
+        </div>
+        <div class="input_comments">
+            <textarea type="text" v-model="comment" placeholder="Comment..." rows="3" cols="100" required></textarea>
+            <button type="submit" @click="handle_comment(id, user_id)" class="submit">Submit comment</button>
+        </div>
+        <div v-for="comment in all_comments" :key="comment" class="comments">
             <p>Username: {{comment.username}}</p>
             <p>Comment: {{comment.text}}</p>
         </div>
@@ -25,7 +32,8 @@ export default {
             id: 0,
             user_id: store.state.user_id,
             all_comments: [],
-            media_numbers: []
+            media_numbers: [],
+            likes: 0
         }
     },
     methods:{
@@ -61,7 +69,8 @@ export default {
             axios.post('http://localhost:3000/numbers',{id}).then((Response) => {
                 console.log(Response.data)
                 Response.data.forEach(element => {
-                    this.media_numbers.push({"views": element.views, "likes": element.likes, "dislikes": element.dislikes})
+                    this.media_numbers.push({"views": element.views})
+                    this.likes = element.likes
                 })
                 console.log(this.media_numbers)
             }).catch((err) => {
@@ -96,12 +105,8 @@ export default {
 
 <style>
     .like{
-        background: url(../assets/like.png) no-repeat transparent;
         cursor: pointer;
-        align-content: center;
-        height: 24px;
-        width: 24px;
-        border: transparent;
+        color: rgb(143, 143, 143);
     }
     .submit{
         cursor: pointer;
@@ -117,5 +122,62 @@ export default {
         background-color: rgb(67, 142, 15);
         color: whitesmoke;
     }
+    .content{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        margin: 10px;
+        align-items: baseline;
+    }
+    .content > p{
+        color: rgb(175, 175, 175);
+    }
+    .views{
+        font-size: 15px;
+    }
+    .input_comments{
+        display: flex;
+    }
+    .title{
+        font-size: 25px;
+        margin: 50px;
+    }
+    video{
+        width: 1200px;
+        height: 600px;
+    }
+    .video_player{
+        display: flex;
+        justify-content: left;
+        margin-left: 30px;
+        height: min-content;
+    }
+    h1{
+        display: flex;
+        justify-content: left;
+        margin-left: 100px;
+    }
+    textarea{
+        background-color: rgb(37, 37, 37);
+        border: none;
+        border-radius: 2px;
+    }
+    textarea::placeholder{
+        color: rgb(167, 167, 167);
+    }
+    textarea:focus{
+        color: rgb(175, 175, 175);
+        outline: none;
+        border-color: #297522;
+        box-shadow: 0 0 10px #297522;
+    }
+    .input_comments{
+        margin-left: 100px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
 
 </style>
