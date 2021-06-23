@@ -4,8 +4,8 @@
         <p>Title: {{title}}</p>
         <p class="views">Views: {{media_numbers[0].views}}</p>
         <p class="like_text">Likes: {{media_numbers[0].likes}}</p>
-        <button class="like" @click="like(id, user_id)">LIKE</button>
-        <textarea type="text" v-model="comment" placeholder="Comment..." rows="3" cols="100"></textarea>
+        <button class="like" @click="like(id, user_id)"></button>
+        <textarea type="text" v-model="comment" placeholder="Comment..." rows="3" cols="100" required></textarea>
         <button type="submit" @click="handle_comment(id, user_id)" class="submit">Submit comment</button>
         <div class="comments" v-for="comment in all_comments" :key="comment">
             <p>Username: {{comment.username}}</p>
@@ -78,7 +78,6 @@ export default {
                 console.log(err)
             })
         }
-
     },
     beforeMount() {
         this.video_src = store.state.video
@@ -97,10 +96,11 @@ export default {
 
 <style>
     .like{
-        background: url(../assets/like.png) 1px 1px no-repeat transparent;
+        background: url(../assets/like.png) no-repeat transparent;
         cursor: pointer;
         align-content: center;
-        height: 35px;
+        height: 24px;
+        width: 24px;
         border: transparent;
     }
     .submit{

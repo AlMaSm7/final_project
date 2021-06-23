@@ -105,6 +105,27 @@ CREATE TABLE IF NOT EXISTS `videoshare`.`liked_dislike` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+-- -----------------------------------------------------
+-- Table `videoshare`.`user_video`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `videoshare`.`user_video` ;
+
+CREATE TABLE IF NOT EXISTS `videoshare`.`user_video`(
+  `user_video_id` INT NOT NULL AUTO_INCREMENT,
+  `users_id_fs` INT,
+  `videos_id_fs` INT, 
+  PRIMARY KEY (`user_video_id`),
+  CONSTRAINT `user_video_videos_id_fs`
+    FOREIGN KEY (`videos_id_fs`)
+    REFERENCES `videoshare`.`videos` (`videos_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `user_video_users_id_fs`
+    FOREIGN KEY (`users_id_fs`)
+    REFERENCES `videoshare`.`users` (`user_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

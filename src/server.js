@@ -163,6 +163,15 @@ router.post('/upload', upload.fields([
         console.log('Here', error.message)
       } else {
         console.log('Sucess')
+        let query_2 = 'INSERT INTO user_video(users_id_fs, videos_id_fs) VALUES (' + con.escape(req.body.user_id) + ', ' + con.escape(results.insertId) + ');'
+        con.query(query_2, (error, result_insert, fields) => {
+          if (error) {
+            console.log(error)
+          } else {
+            console.log("Sucess 2")
+            res.send(result_insert)
+          }
+        })
       }
     })
   } catch (error) {
@@ -300,7 +309,16 @@ router.post('/numbers', (req, res) => {
   })
 })
 router.post('/getUserVideos', (req, res) => {
-  let query = 'SELECT videos.path, videos.thumbnail FROM users INNER JOIN comments ON users.user_id = comments.users_id_fs INNER JOIN videos ON comments.videos_id_fs = videos.videos_id WHERE users.user_id = 1'
+  let query = 'SELECT videos.path, videos.thumbnail FROM videos INNER JOIN user_video ON videos.videos_id = user_video.videos_id_fs INNER JOIN users ON user_video.users_id_fs = users.user_id WHERE users.user_id = ' + con.escape(req.body.user_id) +';'
+  console.log(query)
+  con.query(query, (error, results, fields) => {
+    if (error) {
+      console.log(error)
+    } else {
+      console.log(results)
+      res.send(results)
+    }
+  })
 })
 
 function get_Duration(file_path) {

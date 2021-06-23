@@ -30,6 +30,7 @@
 </template>
 <script>
 import axios from "axios";
+import store from '../store';
 
 export default {
   data() {
@@ -53,6 +54,7 @@ export default {
       formdata.append("video", this.video)
       formdata.append("thumbnail", this.thumbnail)
       formdata.append("title", this.title)
+      formdata.append("user_id", store.state.user_id)
 
       for (var key of formdata.entries()) {
         console.log(key[0] + ", " + key[1]);
