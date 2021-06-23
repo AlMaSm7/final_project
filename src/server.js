@@ -309,7 +309,7 @@ router.post('/numbers', (req, res) => {
   })
 })
 router.post('/getUserVideos', (req, res) => {
-  let query = 'SELECT videos.path, videos.thumbnail FROM videos INNER JOIN user_video ON videos.videos_id = user_video.videos_id_fs INNER JOIN users ON user_video.users_id_fs = users.user_id WHERE users.user_id = ' + con.escape(req.body.user_id) +';'
+  let query = 'SELECT * FROM videos INNER JOIN user_video ON videos.videos_id = user_video.videos_id_fs INNER JOIN users ON user_video.users_id_fs = users.user_id WHERE users.user_id = ' + con.escape(req.body.user_id) +';'
   console.log(query)
   con.query(query, (error, results, fields) => {
     if (error) {

@@ -3,9 +3,10 @@
     <login v-if="!user_here" />
     <register v-if="!user_here" />
     <upload v-if="!user_here" />
-    <home v-if="user_here && !watchvideo"/>
+    <home v-if="!user_here && !watchvideo"/>
     <userData v-if="!user_here"/>
-    <player v-if="watchvideo"/>
+    <player v-if="!watchvideo"/>
+    <usr_videos v-if="user_here"/>
   </div>
 </template>
 
@@ -18,6 +19,7 @@ import upload from "./components/upload.vue";
 import home from "./components/home.vue"
 import userData from "./components/user_info.vue"
 import player from "./components/player.vue";
+import usr_videos from "./components/myvideos.vue"
 
 import { uuid } from "vue-uuid";
 import store from "./store";
@@ -33,7 +35,8 @@ export default {
     upload,
     home, 
     userData,
-    player
+    player, 
+    usr_videos
   },
   data() {
     return {
@@ -88,7 +91,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: rgb(225, 225, 225);
   margin-top: 60px;
 }
 body {

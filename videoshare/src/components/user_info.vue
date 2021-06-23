@@ -1,11 +1,10 @@
 <template>
     <div class="user_container">
-        <div v-for="info in infos" :key="info">
-            <h1>{{info.username}}</h1>
-            <p>{{info.firstname}}</p>
-            <p>{{info.lastname}}</p>
-            <p>{{info.email}}</p>
-        </div>
+        
+            <h1>{{infos[0].username}}</h1>
+            <p>{{infos[0].firstname}}</p>
+            <p>{{infos[0].lastname}}</p>
+            <p>{{info[0].email}}</p>
     </div>
 </template>
 
