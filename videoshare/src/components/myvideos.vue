@@ -4,7 +4,7 @@
         <div v-for="video in my_videos" :key="video" @click="showVideo(video.id)">
             <img :src='require(`../assets/VIDEOS/${video.thumbnail}`)' class="thumbnail"/><br>
             <p>{{video.title}}</p><br>
-            <p>{{video.views}}</p>
+            <p>Views: {{video.views}}</p>
             <p>{{video.title}}</p>
         </div>
     </div>
@@ -45,8 +45,8 @@ export default {
             })
         }
     }, 
-    beforeMount(){
-        this.user_id = store.state.user_id
+    mounted(){
+        this.user_id = store.state.key
         this.getmyVideos(this.user_id)
     }
 }

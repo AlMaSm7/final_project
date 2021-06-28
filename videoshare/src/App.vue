@@ -2,11 +2,10 @@
   <div id="app">
     <login v-if="!user_here" />
     <register v-if="!user_here" />
-    <upload v-if="!user_here" />
-    <home v-if="!user_here && !watchvideo"/>
-    <userData v-if="!user_here"/>
-    <player v-if="watchvideo"/>
-    <usr_videos v-if="!user_here"/>
+    <home v-if="user_here && !watchvideo && !acc" />
+    <player v-if="watchvideo" />
+    <userInfo v-if="acc"/>
+    <upload/>
   </div>
 </template>
 
@@ -15,11 +14,10 @@ import Vue from "vue";
 
 import Register from "./components/register.vue";
 import login from "./components/login.vue";
-import upload from "./components/upload.vue";
-import home from "./components/home.vue"
-import userData from "./components/user_info.vue"
+import home from "./components/home.vue";
 import player from "./components/player.vue";
-import usr_videos from "./components/myvideos.vue"
+import userInfo from "./components/user.vue"
+import upload from './components/upload.vue'
 
 import { uuid } from "vue-uuid";
 import store from "./store";
@@ -32,23 +30,25 @@ export default {
   components: {
     login,
     Register,
-    upload,
-    home, 
-    userData,
-    player, 
-    usr_videos
+    home,
+    player,
+    userInfo,
+    upload
   },
   data() {
     return {
       user_here: false,
-      user: store.state.user_id,
+      user: store.state.key, // this.CryptoJS.AES.decrypt(store.state.key, this.$key),
       username: store.state.username,
-      watching: store.state.watch_video
-    }
+      watching: store.state.watch_video,
+    };
   },
   computed: {
-    watchvideo: function (){
-      return store.state.watch_video
+    watchvideo: function () {
+      return store.state.watch_video;
+    },
+    acc: function (){
+      return store.state.acc
     }
   },
   methods: {
@@ -61,28 +61,28 @@ export default {
         } else {
           reject("No Session Found");
         }
-      })
+      });
     },
   },
   asyncComputed: {
     created() {
-      console.log(this.user)
-      console.log(this.username)
+      console.log(this.user);
+      console.log(this.username);
       this.logged_in()
         .then((result) => {
-          console.log(result)
-          this.user_here = true
+          console.log(result);
+          this.user_here = true;
           //store.commit('setNull')
         })
         .catch((err) => {
-          console.log(err)
-          this.user_here = false
-          store.commit('logout')
-          store.commit('setNull')
-        })
+          console.log(err);
+          this.user_here = false;
+          store.commit("logout");
+          store.commit("setNull");
+        });
     },
   },
-}
+};
 </script>
 
 <style>
@@ -96,8 +96,5 @@ export default {
 }
 body {
   background-color: rgb(50, 50, 50);
-}
-p {
-  color: whitesmoke;
 }
 </style>

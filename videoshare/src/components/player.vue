@@ -1,8 +1,16 @@
 <template>
     <div class="video-container">
-        <h1>DaTube</h1>
+        <div class="logo">
+            <img src="../assets/logo_white_large.png" height="100px" width="100px" @click="leave()">
+        </div>
         <div class="video_player">
             <video :src="require(`../assets/VIDEOS/${video_src}`)" controls autoplay muted></video>
+            <div class="top5" v-for="trending in trending_videos" :key="trending">
+                <img :src='require(`../assets/VIDEOS/${trending.thumbnail}`)' class="thumbnail"/><br>
+                <p>{{trending.title}}</p>
+                <p>{{trending.views}}</p>
+                <p>{{trending.length}}</p>
+            </div>
         </div>
         <div class="content">
             <p class="title">{{title}}</p>
@@ -23,19 +31,24 @@
 <script>
 import axios from 'axios'
 import store from '../store'
+
 export default {
     data() {
         return {
             video_src: "",
             title:"",
             id: 0,
-            user_id: store.state.user_id,
+            user_id: store.state.key, // this.CryptoJS.AES.decrypt(store.state.key, this.$key),
             all_comments: [],
             media_numbers: [],
+            trending_videos: [],
             likes: 0
         }
     },
     methods:{
+        leave: function leave(){
+            store.commit('setNull')
+        },
         handle_comment: function handle_comment(id, user_id){
             const {comment} = this;
             axios.post('http://localhost:3000/comment', {
@@ -86,6 +99,24 @@ export default {
             }).catch((err) => {
                 console.log(err)
             })
+        },
+        trending: function trending(){
+            axios.get('http://localhost:3000/top5').then((Response) => {
+                console.log(Response.data)
+                let time = this.calculateTime()
+                Response.data.forEach(element => {
+                    this.trending_videos.push({"thumbnail": element.thumbnail, "title": element.title, "id": element.videos_id,"views": element.views, "length": time})
+                })
+            })
+        },
+        calculateTime: function calculateTime(time){
+            let minutes = Math.floor(time / 60)
+            let seconds = Math.floor(time % 60)
+            if (seconds < 10) {
+                seconds = '0' + seconds;
+            }   
+            let final_time = minutes + ':' + seconds
+            return final_time
         }
     },
     beforeMount() {
@@ -148,8 +179,8 @@ export default {
         margin: 50px;
     }
     video{
-        width: 1100px;
-        height: 600px;
+        width: 100% !important;
+        height: auto !important;
         background-color: black;
     }
     .video_player{
@@ -157,6 +188,7 @@ export default {
         justify-content: left;
         margin-left: 100px;
         height: min-content;
+        margin-right: 300px;
     }
     h1{
         display: flex;
@@ -194,6 +226,13 @@ export default {
         margin-left: 100px;
         align-items: flex-start;
         flex-direction: column;
+    }
+    .logo{
+        display: flex;
+        margin-bottom: 50px;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-left: 100px;
     }
 
 

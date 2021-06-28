@@ -1,10 +1,9 @@
 <template>
     <div class="user_container">
-        
-            <h1>{{infos[0].username}}</h1>
-            <p>{{infos[0].firstname}}</p>
-            <p>{{infos[0].lastname}}</p>
-            <p>{{info[0].email}}</p>
+        <h1>Username: {{infos[0].username}}</h1>
+        <p>Firstname: {{infos[0].firstname}}</p>
+        <p>Lastname: {{infos[0].lastname}}</p>
+        <p>Email: {{infos[0].email}}</p>
     </div>
 </template>
 
@@ -16,13 +15,13 @@ export default {
     data() {
         return {
             infos: [],
-            user_id: store.state.user_id
+            user_id: store.state.key
         }
     },
     methods: {
         
     },
-    beforeMount() {
+    mounted() {
         const { user_id } = this;
         axios.post("http://localhost:3000/users", {
             user_id
@@ -33,10 +32,18 @@ export default {
             this.infos.push(
                 {"username": store.state.username, "firstname": element.firstname, "lastname": element.lastname, "email": element.email},
             )
-            });
+            })
+            console.log(this.infos[0].username)
         }).catch((err) => {
             console.log(err)
         })
     },
 }
 </script>
+<style>
+    .user_container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+</style>

@@ -53,7 +53,7 @@ export default {
       formdata.append("video", this.video)
       formdata.append("thumbnail", this.thumbnail)
       formdata.append("title", this.title)
-      formdata.append("user_id", store.state.user_id)
+      formdata.append("user_id", store.state.key)
 
       for (var key of formdata.entries()) {
         console.log(key[0] + ", " + key[1]);
