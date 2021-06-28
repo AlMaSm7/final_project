@@ -1,8 +1,8 @@
 <template>
     <div class="container">
+        <img src="../assets/logo_white_large.png" @click="goToAcc()" height="100px" width="100px" class="user">
         <div v-for="foto in thumbnails" :key="foto" @click="showVideo(foto.id)">
             <img :src='require(`../assets/VIDEOS/${foto.thumbnail}`)' class="thumbnail"/><br>
-            <p>{{foto.thumbnail}}</p><br>
             <p>{{foto.title}}</p>
         </div>
     </div>
@@ -33,6 +33,9 @@ export default {
             }).catch((err) => {
                 console.log(err)
             })
+        },
+        goToAcc: function goToAcc(){
+            store.commit('goToAcc')
         }
     },
     beforeMount() {
@@ -60,5 +63,9 @@ export default {
     .thumbnail{
         width: 300px;
         height: 200px;
+        cursor: pointer;
+    }
+    .user:hover{
+        cursor: pointer;
     }
 </style>

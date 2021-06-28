@@ -20,7 +20,6 @@
 </template>
 <script>
 import Vue from "vue";
-import { bus } from "../main.js";
 import axios from "axios";
 import store from '../store'
 
@@ -58,12 +57,10 @@ export default {
           )
           /*Vue.prototype.$userId = Response.data.insertId
           Vue.prototype.$username = username*/
+          let uid = Response.data.insertId
           console.log(Response.data.insertId)
-          store.commit('login', {username: username, uid: Response.data.insertId})
+          store.commit('login', {username: username, uid: uid})
           //store.state.user_id = Response.data.insertId
-          bus.$emit("cookieset", username)
-          console.log(Vue.prototype.$userId)
-          
         })
         .catch((error) => {
           console.log(error)
